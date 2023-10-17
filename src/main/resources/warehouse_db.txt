@@ -1,0 +1,35 @@
+CREATE DATABASE warehouse_db;
+
+USE warehouse_db;
+
+CREATE TABLE materials (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    current_stock INT
+);
+
+CREATE TABLE terminals (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE trucks (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE timeslots (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NOT NULL,
+    terminal_id BIGINT NOT NULL,
+    truck_id BIGINT,
+    booked BOOLEAN NOT NULL,
+    status VARCHAR(255) NOT NULL DEFAULT 'available',
+    FOREIGN KEY (terminal_id) REFERENCES terminals (id),
+    FOREIGN KEY (truck_id) REFERENCES trucks (id)
+);
+
+ALTER TABLE timeslots
+ADD CONSTRAINT unique_terminal_time_slot
+UNIQUE (terminal_id, start_time, end_time);
