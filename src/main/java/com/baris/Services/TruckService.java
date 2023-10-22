@@ -1,7 +1,6 @@
 package com.baris.Services;
 import com.baris.Entity.Truck;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baris.Repositories.TruckRepository;
 import java.util.List;

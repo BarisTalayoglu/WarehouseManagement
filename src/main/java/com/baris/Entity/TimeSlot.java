@@ -3,17 +3,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.persistence.Column;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import java.util.Date;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Entity
 @Data
@@ -22,13 +24,13 @@ public class TimeSlot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "start_time")
     @Future(message = "Start time must be in the future")
-    private Date startTime;
+    private ZonedDateTime startTime;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "end_time")
     @Future(message = "End time must be in the future")
-    private Date endTime;
+    private ZonedDateTime endTime;
 
     @ManyToOne
     @NotNull(message = "Terminal is required")
@@ -49,6 +51,11 @@ public class TimeSlot {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    public ZonedDateTime toWarehouseTimeZone() {
+        return startTime.withZoneSameInstant(ZoneId.of("Europe/Warsaw"));
+    }
+
 
     @PrePersist
     protected void onCreate() {
