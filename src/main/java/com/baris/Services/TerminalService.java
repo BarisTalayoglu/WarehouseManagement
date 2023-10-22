@@ -1,19 +1,15 @@
 package com.baris.Services;
 import com.baris.Repositories.TerminalRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import com.baris.Entity.Terminal;
 
 @Service
+@RequiredArgsConstructor
 public class TerminalService {
     private final TerminalRepository terminalRepository;
-
-    @Autowired
-    public TerminalService(TerminalRepository terminalRepository) {
-        this.terminalRepository = terminalRepository;
-    }
 
     public List<Terminal> getAllTerminals() {
         return terminalRepository.findAll();
